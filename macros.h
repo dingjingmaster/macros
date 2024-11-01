@@ -354,10 +354,7 @@ typedef int                                                                     
 #define C_ASCII_TO_LOWER(c)                                                     (C_ASCII_IS_UPPER (c) ? (c) - 'A' + 'a' : (c))
 #define C_ASCII_IS_SPACE(c)                                                     ((c) == ' ' || (c) == '\f' || (c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == '\v')
 
-#undef C_RETURN_VAL_IF_FAIL
 #define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
-
-#undef C_RETURN_IF_FAIL
 #define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
 
 
