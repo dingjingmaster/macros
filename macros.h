@@ -12,6 +12,7 @@
 #define C_OUT
 #endif
 
+
 // 检测 编译器 是否支持 c11 标准
 #ifndef C_SUPPORTED_C11
 #if defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 7
@@ -343,5 +344,16 @@ typedef int                                                                     
 #define C_ASCII_TO_UPPER(c)                                                     (C_ASCII_IS_LOWER (c) ? (c) - 'a' + 'A' : (c))
 #define C_ASCII_TO_LOWER(c)                                                     (C_ASCII_IS_UPPER (c) ? (c) - 'A' + 'a' : (c))
 #define C_ASCII_IS_SPACE(c)                                                     ((c) == ' ' || (c) == '\f' || (c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == '\v')
+
+#undef C_ALIGN_TO
+#define C_ALIGN_TO(n, align) ({                         \
+    typeof (n) __ret;                                   \
+    if ((n) % (align)) {                                \
+        __ret = ((n) & (~((align) - 1))) + (align);     \
+    }                                                   \
+    else {                                              \
+        __ret = (n);                                    \
+    }                                                   \
+})
 
 #endif
