@@ -324,15 +324,15 @@ typedef int                                                                     
 // do {} while (0);
 #undef C_STMT_START
 #undef C_STMT_END
-#define C_STMT_START  do
+#define C_STMT_START  do {
 #if defined (_MSC_VER) && (_MSC_VER >= 1500)
 #define C_STMT_END \
     __pragma(warning(push)) \
     __pragma(warning(disable:4127)) \
-    while(0) \
+    } while(0) \
     __pragma(warning(pop))
 #else
-#define C_STMT_END    while (0)
+#define C_STMT_END    } while (0)
 #endif
 
 #undef C_MAX
@@ -353,6 +353,13 @@ typedef int                                                                     
 #define C_ASCII_TO_UPPER(c)                                                     (C_ASCII_IS_LOWER (c) ? (c) - 'a' + 'A' : (c))
 #define C_ASCII_TO_LOWER(c)                                                     (C_ASCII_IS_UPPER (c) ? (c) - 'A' + 'a' : (c))
 #define C_ASCII_IS_SPACE(c)                                                     ((c) == ' ' || (c) == '\f' || (c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == '\v')
+
+#undef C_RETURN_VAL_IF_FAIL
+#define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
+
+#undef C_RETURN_IF_FAIL
+#define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
+
 
 #undef C_ALIGN_TO
 #define C_ALIGN_TO(n, align) ({                         \
