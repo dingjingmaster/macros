@@ -99,6 +99,15 @@ typedef void*                                                                   
 C_TYPE_SIZE_CHECK(cpointer, 8)
 #endif
 
+#undef cle16
+typedef cuint16                                                                 cle16;
+
+#undef cle32
+typedef cuint32                                                                 cle32;
+
+#undef cle64
+typedef cuint64                                                                 cle64;
+
 #ifndef C_INT8
 #define C_INT8(x)                                                               ((cint8) x)
 #endif
