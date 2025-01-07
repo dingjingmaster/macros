@@ -55,12 +55,12 @@ C_TYPE_SIZE_CHECK(cuint8, 1)
 #endif
 
 #ifndef cchar
-typedef cint8																	cchar;
+typedef char																	cchar;
 C_TYPE_SIZE_CHECK(cchar, 1)
 #endif
 
 #ifndef cuchar
-typedef cuint8																	cuchar;
+typedef unsigned char                                                           cuchar;
 C_TYPE_SIZE_CHECK(cuchar, 1)
 #endif
 
@@ -378,5 +378,8 @@ typedef int                                                                     
         __ret = (n);                                    \
     }                                                   \
 })
+
+#undef C_FREE(x)
+#define C_FREE(x) C_STMT_START if (x) { free (x); x = NULL; } C_STMT_END
 
 #endif
