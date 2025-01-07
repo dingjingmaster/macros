@@ -379,7 +379,7 @@ typedef int                                                                     
     }                                                   \
 })
 
-#undef C_FREE(x)
+#undef C_FREE
 #define C_FREE(x) C_STMT_START if (x) { free (x); x = NULL; } C_STMT_END
 
 #endif
