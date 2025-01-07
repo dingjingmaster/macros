@@ -54,6 +54,16 @@ typedef unsigned char                                                           
 C_TYPE_SIZE_CHECK(cuint8, 1)
 #endif
 
+#ifndef cchar
+typedef cint8																	cchar;
+C_TYPE_SIZE_CHECK(cchar, 1)
+#endif
+
+#ifndef cuchar
+typedef cuint8																	cuchar;
+C_TYPE_SIZE_CHECK(cuchar, 1)
+#endif
+
 #ifndef cint16
 typedef signed short                                                            cint16;
 C_TYPE_SIZE_CHECK(cint16, 2)
