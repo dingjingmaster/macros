@@ -55,7 +55,7 @@ C_TYPE_SIZE_CHECK(cuint8, 1)
 #endif
 
 #ifndef cchar
-typedef char																	cchar;
+typedef char                                                                    cchar;
 C_TYPE_SIZE_CHECK(cchar, 1)
 #endif
 
@@ -163,67 +163,67 @@ typedef cuint64                                                                 
 #endif
 
 #ifndef C_INT8_MAX
-#define C_INT8_MAX                                                              ((cint8)    0x7F)
+#define C_INT8_MAX                                                              ((cint8) 0x7F)
 #endif
 
 #ifndef C_INT8_MIN
-#define C_INT8_MIN                                                              ((cint8)    (-C_INT8_MAX) - 1)
+#define C_INT8_MIN                                                              ((cint8) (-C_INT8_MAX) - 1)
 #endif
 
 #ifndef C_UINT8_MAX
-#define C_UINT8_MAX                                                             ((cuint8)   0xFF)
+#define C_UINT8_MAX                                                             ((cuint8) 0xFF)
 #endif
 
 #ifndef C_UINT8_MIN
-#define C_UINT8_MIN                                                             ((cuint8)   0x00)
+#define C_UINT8_MIN                                                             ((cuint8) 0x00)
 #endif
 
 #ifndef C_INT16_MAX
-#define C_INT16_MAX                                                             ((cint16)   0x7FFF)
+#define C_INT16_MAX                                                             ((cint16) 0x7FFF)
 #endif
 
 #ifndef C_INT16_MIN
-#define C_INT16_MIN                                                             ((cint16)   (-C_INT16_MAX) - 1)
+#define C_INT16_MIN                                                             ((cint16) (-C_INT16_MAX) - 1)
 #endif
 
 #ifndef C_UINT16_MAX
-#define C_UINT16_MAX                                                            ((cuint16)  0xFFFF)
+#define C_UINT16_MAX                                                            ((cuint16) 0xFFFF)
 #endif
 
 #ifndef C_UINT16_MIN
-#define C_UINT16_MIN                                                            ((cuint16)  0x0000)
+#define C_UINT16_MIN                                                            ((cuint16) 0x0000)
 #endif
 
 #ifndef C_INT32_MAX
-#define C_INT32_MAX                                                             ((cint32)   0x7FFFFFFF)
+#define C_INT32_MAX                                                             ((cint32) 0x7FFFFFFF)
 #endif
 
 #ifndef C_INT32_MIN
-#define C_INT32_MIN                                                             ((cint32)   (-C_INT32_MAX) - 1)
+#define C_INT32_MIN                                                             ((cint32) (-C_INT32_MAX) - 1)
 #endif
 
 #ifndef C_UINT32_MAX
-#define C_UINT32_MAX                                                            ((cuint32)  0xFFFFFFFF)
+#define C_UINT32_MAX                                                            ((cuint32) 0xFFFFFFFF)
 #endif
 
 #ifndef C_UINT32_MIN
-#define C_UINT32_MIN                                                            ((cuint32)  0x00000000)
+#define C_UINT32_MIN                                                            ((cuint32) 0x00000000)
 #endif
 
 #ifndef C_INT64_MAX
-#define C_INT64_MAX                                                             ((cint64)   0x7FFFFFFFFFFFFFFF)
+#define C_INT64_MAX                                                             ((cint64) 0x7FFFFFFFFFFFFFFF)
 #endif
 
 #ifndef C_INT64_MIN
-#define C_INT64_MIN                                                             ((cint64)   (-C_INT64_MAX) - 1)
+#define C_INT64_MIN                                                             ((cint64) (-C_INT64_MAX) - 1)
 #endif
 
 #ifndef C_UINT64_MAX
-#define C_UINT64_MAX                                                            ((cuint64)  0xFFFFFFFFFFFFFFFF)
+#define C_UINT64_MAX                                                            ((cuint64) 0xFFFFFFFFFFFFFFFF)
 #endif
 
 #ifndef C_UINT64_MIN
-#define C_UINT64_MIN                                                            ((cuint64)  0x0000000000000000)
+#define C_UINT64_MIN                                                            ((cuint64) 0x0000000000000000)
 #endif
 
 // 自然常数 e
@@ -357,6 +357,13 @@ typedef int                                                                     
 #undef C_N_ELEMENTS
 #define C_N_ELEMENTS(arr)                                                       (sizeof(arr) / sizeof((arr)[0]))
 
+#undef C_ASCII_IS_SPACE
+#undef C_ASCII_IS_UPPER
+#undef C_ASCII_IS_LOWER
+#undef C_ASCII_IS_ALPHA
+#undef C_ASCII_TO_UPPER
+#undef C_ASCII_TO_LOWER
+
 #define C_ASCII_IS_UPPER(c)                                                     ((c) >= 'A' && (c) <= 'Z')
 #define C_ASCII_IS_LOWER(c)                                                     ((c) >= 'a' && (c) <= 'z')
 #define C_ASCII_IS_ALPHA(c)                                                     (C_ASCII_IS_UPPER (c) || C_ASCII_IS_LOWER(c))
@@ -364,8 +371,18 @@ typedef int                                                                     
 #define C_ASCII_TO_LOWER(c)                                                     (C_ASCII_IS_UPPER (c) ? (c) - 'A' + 'a' : (c))
 #define C_ASCII_IS_SPACE(c)                                                     ((c) == ' ' || (c) == '\f' || (c) == '\n' || (c) == '\r' || (c) == '\t' || (c) == '\v')
 
-#define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
+#undef C_FREE
+#undef C_FREE_FUNC
+#undef C_BREAK_IF_FAIL
+#undef C_BREAK_IF_NULL
+#undef C_RETURN_IF_FAIL
+#undef C_RETURN_VAL_IF_FAIL
+
+#define C_BREAK_IF_FAIL(x)                                                      if (!(x)) { break; }
+#define C_BREAK_IF_NULL(x)                                                      if ((x) == NULL) { break; }
 #define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
+#define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
+#define C_FREE_FUNC(x, f, ...)                                                  C_STMT_START if ((x)) { f (x, ##__VA_ARGS__); x = NULL; } C_STMT_END
 
 
 #undef C_ALIGN_TO
@@ -379,7 +396,5 @@ typedef int                                                                     
     }                                                   \
 })
 
-#undef C_FREE
-#define C_FREE(x) C_STMT_START if (x) { free (x); x = NULL; } C_STMT_END
 
 #endif
