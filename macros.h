@@ -12,6 +12,12 @@
 #define C_OUT
 #endif
 
+#ifdef __GNUC__
+#define C_GNUC_CHECK_VERSION(major, minor)                                      ((__GNUC__ > (major)) || ((__GNUC__ == (major)) && (__GNUC_MINOR__ >= (minor))))
+#else
+#define C_GNUC_CHECK_VERSION(major, minor)                                      0
+#endif
+
 
 // 检测 编译器 是否支持 c11 标准
 #ifndef C_SUPPORTED_C11
@@ -79,9 +85,19 @@ typedef signed int                                                              
 C_TYPE_SIZE_CHECK(cint32, 4)
 #endif
 
+#ifndef cint
+typedef signed int                                                              cint;
+C_TYPE_SIZE_CHECK(cint, 4)
+#endif
+
 #ifndef cuint32
 typedef unsigned int                                                            cuint32;
 C_TYPE_SIZE_CHECK(cuint32, 4)
+#endif
+
+#ifndef cuint
+typedef unsigned int                                                            cuint;
+C_TYPE_SIZE_CHECK(cuint, 4)
 #endif
 
 #ifndef cint64
@@ -343,6 +359,14 @@ typedef int                                                                     
     __pragma(warning(pop))
 #else
 #define C_STMT_END    } while (0)
+#endif
+
+#if C_GNUC_CHECK_VERSION(2, 0) && defined(__OPTIMIZE__)
+#define C_LIKELY(expr) (__builtin_expect(!!(expr), 1))
+#define C_UNLIKELY(expr) (__builtin_expect(!!(expr), 0))
+#else
+#define C_LIKELY(expr) (expr)
+#define C_UNLIKELY(expr) (expr)
 #endif
 
 #undef C_MAX
