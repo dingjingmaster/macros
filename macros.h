@@ -402,9 +402,12 @@ typedef int                                                                     
 #undef C_RETURN_IF_FAIL
 #undef C_RETURN_VAL_IF_FAIL
 
+#define C_BREAK_IF_OK(x)														if (x) { break; }
 #define C_BREAK_IF_FAIL(x)                                                      if (!(x)) { break; }
 #define C_BREAK_IF_NULL(x)                                                      if ((x) == NULL) { break; }
+#define C_RETURN_IF_OK(ck)														C_STMT_START if ((ck)) { return; } C_STMT_END
 #define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
+#define C_RETURN_VAL_IF_OK(ck, val)                                             C_STMT_START if ((ck)) { return (val); } C_STMT_END
 #define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
 #define C_FREE_FUNC(x, f, ...)                                                  C_STMT_START if ((x)) { f (x, ##__VA_ARGS__); x = NULL; } C_STMT_END
 
@@ -420,5 +423,80 @@ typedef int                                                                     
     }                                                   \
 })
 
+static inline cint64 c_strlen (const char* str)
+{
+	C_RETURN_VAL_IF_FAIL(str, 0);
+
+	int idx = 0;
+	for (idx = 0; '\0' != str[idx]; ++idx);
+
+	return idx;
+}
+
+static inline int c_strcmp (const char* str1, const char* str2)
+{
+	C_RETURN_VAL_IF_OK(str1 && !str2, 1);
+	C_RETURN_VAL_IF_OK(!str1 && str2, -1);
+	C_RETURN_VAL_IF_OK(!str1 && !str2, 0);
+	
+	int idx = 0;
+	for (idx = 0; str1[idx] && str2[idx]; ++idx) {
+		int res = str1[idx] - str2[idx];
+		if (0 == res) {
+			continue;
+		}
+		return res;
+	}
+
+	C_RETURN_VAL_IF_OK(!str1[idx] && !str2[idx], 0);
+	C_RETURN_VAL_IF_OK(!str1[idx], -1);
+
+	// !str2[idx]
+	return 1;
+}
+
+static inline int c_strncmp (const char* str1, const char* str2, cuint64 len)
+{
+	C_RETURN_VAL_IF_OK(str1 && !str2, 1);
+	C_RETURN_VAL_IF_OK(!str1 && str2, -1);
+	C_RETURN_VAL_IF_OK(!str1 && !str2, 0);
+
+	int idx = 0;
+	for (idx = 0; str1[idx] && str2[idx] && idx < len; ++idx) {
+		int res = str1[idx] - str2[idx];
+		if (0 == res) {
+			continue;
+		}
+		return res;
+	}
+
+	C_RETURN_VAL_IF_OK((idx >= len), (str1[idx - 1] - str2[idx - 1]));
+
+	C_RETURN_VAL_IF_OK(!str1[idx] && !str2[idx], 0);
+	C_RETURN_VAL_IF_OK(!str1[idx], -1);
+
+	return 1;
+}
+
+static inline bool c_str_has_prefix (const char* str, const char* prefix)
+{
+	C_RETURN_VAL_IF_FAIL(str, false);
+	C_RETURN_VAL_IF_FAIL(prefix, false);
+
+	return (0 == c_strncmp(str, prefix, c_strlen(prefix)));
+}
+
+static inline bool c_str_has_suffix (const char* str, const char* suffix)
+{
+	C_RETURN_VAL_IF_FAIL(str, false);
+	C_RETURN_VAL_IF_FAIL(suffix, false);
+
+	cuint64 strLen = c_strlen(str);
+	cuint64 sufLen = c_strlen(suffix);
+
+	C_RETURN_VAL_IF_OK(strLen < sufLen, false);
+
+	return (0 == c_strcmp(str + strLen - sufLen, suffix));
+}
 
 #endif
