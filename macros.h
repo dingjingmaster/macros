@@ -278,6 +278,34 @@ typedef void*                                                                   
 C_TYPE_SIZE_CHECK(cpointer, C_SIZEOF_VOID_PTR)
 #endif
 
+#ifndef csize
+typedef unsigned long                                                           csize;
+#define C_SIZEOF_SIZE                                                           8
+C_TYPE_SIZE_CHECK(csize, C_SIZEOF_SIZE)
+#endif
+
+#ifndef cssize
+typedef signed long                                                             cssize;
+#define C_SIZEOF_SSIZE                                                          8
+C_TYPE_SIZE_CHECK(cpointer, C_SIZEOF_SSIZE)
+#endif
+
+#ifndef cintptr
+#define C_SIZEOF_INTPTR                                                         C_SIZEOF_VOID_PTR
+typedef signed long                                                             cintptr;
+#endif
+
+#ifndef cunicodechar
+#define C_SIZEOF_UNICODE_CHAR                                                   4
+typedef cuint32                                                                 cunicodechar;
+C_TYPE_SIZE_CHECK(cunicodechar, C_SIZEOF_UNICODE_CHAR)
+#endif
+
+#ifndef cuintptr
+#define C_SIZEOF_UINTPTR                                                        C_SIZEOF_VOID_PTR
+typedef unsigned long                                                           cuintptr;
+#endif
+
 #ifndef C_CPU_WORDSIZE
 #define C_CPU_WORDSIZE                                                          C_SIZEOF_VOID_PTR
 #endif
@@ -574,7 +602,7 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 
 #define C_DECLARE_PRIVATE_D(Dptr, klass) \
     inline klass##Private* d_func() \
-    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<klass##Private *>(cGetPtrHelper(Dptr));) } \
+    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<klass##Private*>(cGetPtrHelper(Dptr));) } \
     inline const klass##Private* d_func() const \
     { C_CAST_IGNORE_ALIGN(return reinterpret_cast<const klass##Private *>(cGetPtrHelper(Dptr));) } \
     friend class klass##Private;
@@ -584,8 +612,8 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
     inline const klass* q_func() const { return static_cast<const klass*>(q_ptr); } \
     friend class klass;
 
-#define C_D(klass) klass##Private * const d = d_func()
-#define C_Q(klass) klass * const q = q_func()
+#define C_D(klass) klass##Private* const d = d_func()
+#define C_Q(klass) klass* const q = q_func()
 #endif
 
 
