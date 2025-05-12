@@ -266,13 +266,13 @@ C_TYPE_SIZE_CHECK(cuint, C_SIZEOF_UINT)
 #endif
 
 #ifndef cint64
-typedef signed long                                                             cint64;
+typedef signed long long                                                        cint64;
 #define C_SIZEOF_LONG                                                           8
 C_TYPE_SIZE_CHECK(cint64, C_SIZEOF_LONG)
 #endif
 
 #ifndef cuint64
-typedef unsigned long                                                           cuint64;
+typedef unsigned long long                                                      cuint64;
 #define C_SIZEOF_ULONG                                                          8
 C_TYPE_SIZE_CHECK(cuint64, C_SIZEOF_ULONG)
 #endif
