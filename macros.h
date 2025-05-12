@@ -295,6 +295,18 @@ typedef void*                                                                   
 C_TYPE_SIZE_CHECK(cpointer, C_SIZEOF_VOID_PTR)
 #endif
 
+#ifndef clong
+typedef long                                                                    clong;
+#define C_SIZEOF_CLONG                                                          8
+C_TYPE_SIZE_CHECK(clong, C_SIZEOF_CLONG)
+#endif
+
+#ifndef culong
+typedef unsigned long                                                           culong;
+#define C_SIZEOF_CULONG                                                         8
+C_TYPE_SIZE_CHECK(culong, C_SIZEOF_CULONG)
+#endif
+
 #ifndef csize
 typedef unsigned long                                                           csize;
 #define C_SIZEOF_SIZE                                                           8
