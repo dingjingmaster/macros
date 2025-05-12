@@ -702,6 +702,12 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
     }                                                   \
 })
 
+#define C_SWAP(a, b) C_STMT_START \
+    typeof(a) tmp = (a); \
+    (a) = (b); \
+    (b) = tmp; \
+C_STMT_END
+
 static inline cint64 c_strlen (const char* str)
 {
 	C_RETURN_VAL_IF_FAIL(str, 0);
