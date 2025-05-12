@@ -158,77 +158,104 @@
 // 定义 int 类型
 #ifndef cint8
 typedef signed char                                                             cint8;
-C_TYPE_SIZE_CHECK(cint8, 1)
+#define C_SIZEOF_INT8                                                           1
+C_TYPE_SIZE_CHECK(cint8, C_SIZEOF_INT8)
 #endif
 
 #ifndef cuint8
 typedef unsigned char                                                           cuint8;
-C_TYPE_SIZE_CHECK(cuint8, 1)
+#define C_SIZEOF_UINT8                                                          1
+C_TYPE_SIZE_CHECK(cuint8, C_SIZEOF_UINT8)
 #endif
 
 #ifndef cchar
 typedef char                                                                    cchar;
-C_TYPE_SIZE_CHECK(cchar, 1)
+#define C_SIZEOF_CHAR                                                           1
+C_TYPE_SIZE_CHECK(cchar, C_SIZEOF_CHAR)
 #endif
 
 #ifndef cuchar
+#define C_SIZEOF_UCHAR                                                          1
 typedef unsigned char                                                           cuchar;
-C_TYPE_SIZE_CHECK(cuchar, 1)
+C_TYPE_SIZE_CHECK(cuchar, C_SIZEOF_UCHAR)
 #endif
 
 #ifndef cint16
 typedef signed short                                                            cint16;
-C_TYPE_SIZE_CHECK(cint16, 2)
+#define C_SIZEOF_SHORT                                                          2
+C_TYPE_SIZE_CHECK(cint16, C_SIZEOF_SHORT)
 #endif
 
 #ifndef cuint16
 typedef unsigned short                                                          cuint16;
-C_TYPE_SIZE_CHECK(cuint16, 2)
+#define C_SIZEOF_USHORT                                                         2
+C_TYPE_SIZE_CHECK(cuint16, C_SIZEOF_USHORT)
 #endif
 
 #ifndef cint32
 typedef signed int                                                              cint32;
-C_TYPE_SIZE_CHECK(cint32, 4)
+#define C_SIZEOF_INT32                                                          4
+C_TYPE_SIZE_CHECK(cint32, C_SIZEOF_INT32)
 #endif
 
 #ifndef cint
 typedef signed int                                                              cint;
-C_TYPE_SIZE_CHECK(cint, 4)
+#define C_SIZEOF_INT                                                            4
+C_TYPE_SIZE_CHECK(cint, C_SIZEOF_INT)
 #endif
 
 #ifndef cuint32
 typedef unsigned int                                                            cuint32;
-C_TYPE_SIZE_CHECK(cuint32, 4)
+#define C_SIZEOF_UINT32                                                         4
+C_TYPE_SIZE_CHECK(cuint32, C_SIZEOF_UINT32)
 #endif
 
 #ifndef cuint
 typedef unsigned int                                                            cuint;
-C_TYPE_SIZE_CHECK(cuint, 4)
+#define C_SIZEOF_UINT                                                           4
+C_TYPE_SIZE_CHECK(cuint, C_SIZEOF_UINT)
 #endif
 
 #ifndef cint64
 typedef signed long                                                             cint64;
-C_TYPE_SIZE_CHECK(cint64, 8)
+#define C_SIZEOF_LONG                                                           8
+C_TYPE_SIZE_CHECK(cint64, C_SIZEOF_LONG)
 #endif
 
 #ifndef cuint64
 typedef unsigned long                                                           cuint64;
-C_TYPE_SIZE_CHECK(cuint64, 8)
+#define C_SIZEOF_ULONG                                                          8
+C_TYPE_SIZE_CHECK(cuint64, C_SIZEOF_ULONG)
 #endif
 
 #ifndef cfloat
 typedef float                                                                   cfloat;
-C_TYPE_SIZE_CHECK(cfloat, 4)
+#define C_SIZEOF_FLOAT                                                          4
+C_TYPE_SIZE_CHECK(cfloat, C_SIZEOF_FLOAT)
 #endif
 
 #ifndef cdouble
 typedef double                                                                  cdouble;
-C_TYPE_SIZE_CHECK(cdouble, 8)
+#define C_SIZEOF_DOUBLE                                                         8
+C_TYPE_SIZE_CHECK(cdouble, C_SIZEOF_DOUBLE)
 #endif
 
 #ifndef cpointer
 typedef void*                                                                   cpointer;
-C_TYPE_SIZE_CHECK(cpointer, 8)
+#define C_SIZEOF_VOID_PTR                                                       8
+C_TYPE_SIZE_CHECK(cpointer, C_SIZEOF_VOID_PTR)
+#endif
+
+#ifndef C_CPU_WORDSIZE
+#define C_CPU_WORDSIZE                                                          C_SIZEOF_VOID_PTR
+#endif
+
+#ifndef C_CPU_BITSIZE
+#if C_CPU_WORDSIZE == 8
+#define C_CPU_BITSIZE                                                           64
+#elif C_CPU_WORDSIZE == 4
+#define C_CPU_BITSIZE                                                           32
+#endif
 #endif
 
 #undef cle16
