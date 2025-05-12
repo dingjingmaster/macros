@@ -224,6 +224,18 @@ typedef unsigned short                                                          
 C_TYPE_SIZE_CHECK(cuint16, C_SIZEOF_USHORT)
 #endif
 
+#ifndef cshort
+typedef signed short                                                            cshort;
+#define C_SIZEOF_SHORT                                                          2
+C_TYPE_SIZE_CHECK(cshort, C_SIZEOF_SHORT)
+#endif
+
+#ifndef cushort
+typedef unsigned short                                                          cushort;
+#define C_SIZEOF_USHORT                                                         2
+C_TYPE_SIZE_CHECK(cushort, C_SIZEOF_USHORT)
+#endif
+
 #ifndef cint32
 typedef signed int                                                              cint32;
 #define C_SIZEOF_INT32                                                          4
