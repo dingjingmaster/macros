@@ -161,6 +161,12 @@
 #define C_DECL_COLD_FUNCTION
 #endif
 
+#if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 403) && !(((__clang_major__ * 100) + __clang_minor__))
+#define C_ALLOC_SIZE(x)         __attribute__((alloc_size(x)))
+#else
+#define C_ALLOC_SIZE(x)
+#endif
+
 
 // 计算结构体中成员在结构体中的偏移位置
 #ifndef C_STRUCT_OFFSET_OF
