@@ -32,6 +32,24 @@
 #endif
 
 /**
+ * @brief 是否支持C++11标准
+ */
+#ifndef C_SUPPORTED_CXX11
+#if defined(__cplusplus) && __cplusplus >= 201103L
+#define C_SUPPORTED_CXX11 1
+#else
+#define C_SUPPORTED_CXX11 0
+#endif
+
+#if C_SUPPORTED_CXX11
+#define C_DECL_NOEXCEPT noexcept
+#define C_DECL_NOEXCEPT_EXPR(x) noexcept(x)
+#else
+#define C_DECL_NOEXCEPT
+#define C_DECL_NOEXCEPT_EXPR(x)
+#endif
+
+/**
  * @brief 
  *  warning_push
  *  warning_pop
