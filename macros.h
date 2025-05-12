@@ -556,6 +556,38 @@ C_WARNING_POP
 #define C_UNLIKELY(expr) (expr)
 #endif
 
+#ifdef __cplusplus
+template <typename T> inline T* cGetPtrHelper(T* ptr) C_DECL_NOEXCEPT { return ptr; }
+
+#if C_SUPPORTED_C11
+template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> decltype(ptr.get())
+{ static_assert(noexcept(ptr.get()), "Smart d pointers for C_DECLARE_PRIVATE must have noexcept get()"); return ptr.get(); }
+#endif
+
+#define C_CAST_IGNORE_ALIGN(body)   C_WARNING_PUSH C_WARNING_DISABLE_GCC("-Wcast-align") body C_WARNING_POP
+#define C_DECLARE_PRIVATE(klass) \
+    inline klass##Private* d_func() \
+    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<klass##Private*>(cGetPtrHelper(d_ptr));) } \
+    inline const klass##Private* d_func() const \
+    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<const klass##Private*>(cGetPtrHelper(d_ptr));) } \
+    friend class klass##Private;
+
+#define C_DECLARE_PRIVATE_D(Dptr, klass) \
+    inline klass##Private* d_func() \
+    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<klass##Private *>(cGetPtrHelper(Dptr));) } \
+    inline const klass##Private* d_func() const \
+    { C_CAST_IGNORE_ALIGN(return reinterpret_cast<const klass##Private *>(cGetPtrHelper(Dptr));) } \
+    friend class klass##Private;
+
+#define C_DECLARE_PUBLIC(klass) \
+    inline klass* q_func() { return static_cast<klass*>(q_ptr); } \
+    inline const klass* q_func() const { return static_cast<const klass*>(q_ptr); } \
+    friend class klass;
+
+#define C_D(klass) klass##Private * const d = d_func()
+#define C_Q(klass) klass * const q = q_func()
+#endif
+
 
 
 #undef C_MAX
