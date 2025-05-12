@@ -145,6 +145,9 @@
 #define C_NORETURN              __attribute__((__noreturn__))
 #define C_DECL_DEPRECATED       __attribute__((__deprecated__))
 #define C_DECL_CONST_FUNCTION   __attribute__((const))
+#define C_REQUIRED_RESULT       __attribute__((__warn_unused_result__))
+#define C_DECL_PURE_FUNCTION    __attribute__((pure))
+#define C_DECL_COLD_FUNCTION    __attribute__((cold))
 #else
 #define C_ALIGNOF(type)     
 #define C_TYPEOF(expr)      
@@ -153,6 +156,9 @@
 #define C_NORETURN          
 #define C_DECL_DEPRECATED   
 #define C_DECL_CONST_FUNCTION 
+#define C_REQUIRED_RESULT
+#define C_DECL_PURE_FUNCTION
+#define C_DECL_COLD_FUNCTION
 #endif
 
 
