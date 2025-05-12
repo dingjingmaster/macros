@@ -40,6 +40,7 @@
 #else
 #define C_SUPPORTED_CXX11 0
 #endif
+#endif
 
 #if C_SUPPORTED_CXX11
 #define C_DECL_NOEXCEPT noexcept
