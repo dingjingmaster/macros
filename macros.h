@@ -307,6 +307,20 @@ typedef unsigned long                                                           
 C_TYPE_SIZE_CHECK(culong, C_SIZEOF_CULONG)
 #endif
 
+#ifndef clonglong
+typedef long long                                                               clonglong;
+#define C_SIZEOF_CLONGLONG                                                      8
+C_TYPE_SIZE_CHECK(clonglong, C_SIZEOF_CLONGLONG)
+#endif
+
+#ifndef culonglong
+typedef unsigned long long                                                      culonglong;
+#define C_SIZEOF_CULONGLONG                                                     8
+C_TYPE_SIZE_CHECK(culonglong, C_SIZEOF_CULONGLONG)
+#endif
+
+
+
 #ifndef csize
 typedef unsigned long                                                           csize;
 #define C_SIZEOF_SIZE                                                           8
