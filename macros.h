@@ -31,6 +31,74 @@
 #endif
 #endif
 
+/**
+ * @brief 
+ *  warning_push
+ *  warning_pop
+ */
+#define C_DO_PRAGMA(text)                      _Pragma(#text)
+#if defined(__INTEL_COMPILER) && defined(_MSC_VER)
+# undef QT_DO_PRAGMA
+# define C_WARNING_PUSH                         __paragma(warning(push))
+# define C_WARNING_POP                          __pragma(warning(pop))
+# define C_WARNING_DISABLE_MSVC(number)
+# define C_WARNING_DISABLE_INTEL(number)        __pragma(warning(disable: number))
+# define C_WARNING_DISABLE_CLANG(text)
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_DISABLE_DEPRECATED           C_WARNING_DISABLE_INTEL(1478 1786)
+#elif defined(__INTEL_COMPILER)
+# define C_WARNING_PUSH                         C_DO_PRAGMA(warning(push))
+# define C_WARNING_POP                          C_DO_PRAGMA(warning(pop))
+# define C_WARNING_DISABLE_INTEL(number)        C_DO_PRAGMA(warning(disable: number))
+# define C_WARNING_DISABLE_MSVC(number)
+# define C_WARNING_DISABLE_CLANG(text)
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_DISABLE_DEPRECATED           C_WARNING_DISABLE_INTEL(1478 1786)
+#elif defined(_MSC_VER) && !defined(__clang__)
+# undef QT_DO_PRAGMA
+# define C_WARNING_PUSH                         __pragma(warning(push))
+# define C_WARNING_POP                          __pragma(warning(pop))
+# define C_WARNING_DISABLE_MSVC(number)         __pragma(warning(disable: number))
+# define C_WARNING_DISABLE_INTEL(number)
+# define C_WARNING_DISABLE_CLANG(text)
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_DISABLE_DEPRECATED           C_WARNING_DISABLE_MSVC(4996)
+#elif defined(__clang__) && ((__clang_major__ * 100) + __clang_minor__)
+# define C_WARNING_PUSH                         C_DO_PRAGMA(clang diagnostic push)
+# define C_WARNING_POP                          C_DO_PRAGMA(clang diagnostic pop)
+# define C_WARNING_DISABLE_CLANG(text)          C_DO_PRAGMA(clang diagnostic ignored text)
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_DISABLE_INTEL(number)
+# define C_WARNING_DISABLE_MSVC(number)
+# define C_WARNING_DISABLE_DEPRECATED           C_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
+#elif defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ >= 406)
+# define C_WARNING_PUSH                         C_DO_PRAGMA(GCC diagnostic push)
+# define C_WARNING_POP                          C_DO_PRAGMA(GCC diagnostic pop)
+# define C_WARNING_DISABLE_GCC(text)            C_DO_PRAGMA(GCC diagnostic ignored text)
+# define C_WARNING_DISABLE_CLANG(text)
+# define C_WARNING_DISABLE_INTEL(number)
+# define C_WARNING_DISABLE_MSVC(number)
+# define C_WARNING_DISABLE_DEPRECATED           C_WARNING_DISABLE_GCC("-Wdeprecated-declarations")
+#else
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_PUSH
+# define C_WARNING_POP
+# define C_WARNING_DISABLE_INTEL(number)
+# define C_WARNING_DISABLE_MSVC(number)
+# define C_WARNING_DISABLE_CLANG(text)
+# define C_WARNING_DISABLE_GCC(text)
+# define C_WARNING_DISABLE_DEPRECATED
+#endif
+
+#ifndef C_IGNORE_DEPRECATIONS
+#define C_IGNORE_DEPRECATIONS(statement) \
+    C_WARNING_PUSH \
+    C_WARNING_DISABLE_DEPRECATED \
+    statement \
+    C_WARNING_POP
+#endif
+
+
 // 计算结构体中成员在结构体中的偏移位置
 #ifndef C_STRUCT_OFFSET_OF
 #define C_STRUCT_OFFSET_OF(structType, member)                                  offsetof(structType, member)
@@ -39,15 +107,15 @@
 // 检查结构体大小是否符合预期
 #ifndef C_STRUCT_SIZE_CHECK
 #if C_SUPPORTED_C11
-#define C_STRUCT_SIZE_CHECK(structType, expectedSize)                           static_assert(sizeof(structType) == expectedSize, "struct '"#structType"' size is wrong");
+#define C_STRUCT_SIZE_CHECK(structType, expectedSize)                           _Static_assert((sizeof(structType) == (expectedSize)), "struct size '#structType' is wrong");
 #else
-#define C_STRUCT_SIZE_CHECK(structType, expectedSize)                           typedef char _macros_check_size##structType[(sizeof(structType) == expectedSize ? 1 : -1)];
+#define C_STRUCT_SIZE_CHECK(structType, expectedSize)                           typedef char _macros_check_size##structType[((sizeof(structType) == (expectedSize)) ? 1 : -1)];
 #endif
 #endif
 
 // 检查类型大小是否符合预期
 #ifndef C_TYPE_SIZE_CHECK
-#define C_TYPE_SIZE_CHECK(typeT, sizeT)                                         C_STRUCT_SIZE_CHECK(typeT, sizeT)
+#define C_TYPE_SIZE_CHECK(typeT, sizeT)                                         C_STRUCT_SIZE_CHECK((typeT), (sizeT))
 #endif
 
 // 定义 int 类型
@@ -136,39 +204,39 @@ typedef cuint32                                                                 
 typedef cuint64                                                                 cle64;
 
 #ifndef C_INT8
-#define C_INT8(x)                                                               ((cint8) x)
+#define C_INT8(x)                                                               ((cint8) (x))
 #endif
 
 #ifndef C_UINT8
-#define C_UINT8(x)                                                              ((cuint8) x)
+#define C_UINT8(x)                                                              ((cuint8) (x))
 #endif
 
 #ifndef C_INT16
-#define C_INT16(x)                                                              ((cint16) x)
+#define C_INT16(x)                                                              ((cint16) (x))
 #endif
 
 #ifndef C_UINT16
-#define C_UINT16(x)                                                             ((cuint16) x)
+#define C_UINT16(x)                                                             ((cuint16) (x))
 #endif
 
 #ifndef C_INT32
-#define C_INT32(x)                                                              ((cint32) x)
+#define C_INT32(x)                                                              ((cint32) (x))
 #endif
 
 #ifndef C_UINT32
-#define C_UINT32(x)                                                             ((cuint32) x)
+#define C_UINT32(x)                                                             ((cuint32) (x))
 #endif
 
 #ifndef C_INT64
-#define C_INT64(x)                                                              ((cint64) x)
+#define C_INT64(x)                                                              ((cint64) (x))
 #endif
 
 #ifndef C_UINT64
-#define C_UINT64(x)                                                             ((cuint64) x)
+#define C_UINT64(x)                                                             ((cuint64) (x))
 #endif
 
 #ifndef C_POINTER
-#define C_POINTER(x)                                                            ((C_POINTER) x)
+#define C_POINTER(x)                                                            ((C_POINTER) (x))
 #endif
 
 #ifndef C_INT64_CONSTANT
@@ -293,6 +361,28 @@ typedef int                                                                     
 #endif
 
 /**
+ * @brief C++类相关
+ */
+#ifdef __cplusplus
+C_WARNING_PUSH
+C_WARNING_DISABLE_GCC("-Wparentheses")
+#define C_DISABLE_COPY(cls) \
+    cls (const cls &) = delete; \
+    cls &operator=(const cls &) = delete;
+#define C_DISABLE_MOVE(cls) \
+    cls(cls &&) = delete; \
+    cls &operator=(cls &&) = delete;
+#define C_DISABLE_COPY_MOVE(cls) \
+    C_DISABLE_COPY(cls) \
+    C_DISABLE_MOVE(cls)
+C_WARNING_POP
+#else
+#define C_DISABLE_COPY(cls)
+#define C_DISABLE_MOVE(cls)
+#endif
+
+
+/**
  * @brief 函数可见性，gcc可见性分为以下几种情况(__attribute__((visibility(""))))：
  *  1. default：默认可见（函数在程序的任何地方可见）
  *  2. hidden：隐藏可见性。函数在链接时候不可见，对于外部链接的符号，将无法从其它目标文件中引用
@@ -369,6 +459,8 @@ typedef int                                                                     
 #define C_LIKELY(expr) (expr)
 #define C_UNLIKELY(expr) (expr)
 #endif
+
+
 
 #undef C_MAX
 #define C_MAX(a, b)                                                             (((a) > (b)) ? (a) : (b))
