@@ -98,6 +98,22 @@
     C_WARNING_POP
 #endif
 
+#if defined(__GNUC__)
+#define C_ALIGNOF(type)     __alignof__ (type)
+#define C_TYPEOF(expr)      __typeof__(expr)
+#define C_DECL_UNUSED       __attribute__ ((__unused__))
+#define C_DECL_ALIGN(n)     __attribute__((__aligned__(n)))
+#define C_NORETURN          __attribute__((__noreturn__))
+#define C_DECL_DEPRECATED   __attribute__((__deprecated__))
+#else
+#define C_ALIGNOF(type)     
+#define C_TYPEOF(expr)      
+#define C_DECL_UNUSED       
+#define C_DECL_ALIGN(n)     
+#define C_NORETURN          
+#define C_DECL_DEPRECATED   
+#endif
+
 
 // 计算结构体中成员在结构体中的偏移位置
 #ifndef C_STRUCT_OFFSET_OF
