@@ -1,6 +1,7 @@
 #ifndef C_COMMON_STD_MACROS_H
 #define C_COMMON_STD_MACROS_H
 #include <stdio.h>
+#include <assert.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
@@ -180,6 +181,10 @@
 #else
 #define C_STRUCT_SIZE_CHECK(structType, expectedSize)                           typedef char _macros_check_size##structType[((sizeof(structType) == (expectedSize)) ? 1 : -1)];
 #endif
+#endif
+
+#ifndef C_ASSERT
+#define C_ASSERT(x)                                                             assert(x)
 #endif
 
 // 检查类型大小是否符合预期
@@ -596,12 +601,13 @@ C_WARNING_POP
 #define C_UNLIKELY(expr) (expr)
 #endif
 
+
 #ifdef __cplusplus
 template <typename T> inline T* cGetPtrHelper(T* ptr) C_DECL_NOEXCEPT { return ptr; }
 
 #if C_SUPPORTED_C11
 template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> decltype(ptr.get())
-{ static_assert(noexcept(ptr.get()), "Smart d pointers for C_DECLARE_PRIVATE must have noexcept get()"); return ptr.get(); }
+{ _Static_assert(noexcept(ptr.get()), "Smart d pointers for C_DECLARE_PRIVATE must have noexcept get()"); return ptr.get(); }
 #endif
 
 #define C_CAST_IGNORE_ALIGN(body)   C_WARNING_PUSH C_WARNING_DISABLE_GCC("-Wcast-align") body C_WARNING_POP
