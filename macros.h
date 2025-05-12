@@ -42,12 +42,32 @@
 #endif
 #endif
 
+#ifndef C_SUPPORTED_CXX14
+#if defined(__cplusplus) && __cplusplus >= 201304L
+#define C_SUPPORTED_CXX14 1
+#else
+#define C_SUPPORTED_CXX14 0
+#endif
+#endif
+
 #if C_SUPPORTED_CXX11
 #define C_DECL_NOEXCEPT noexcept
 #define C_DECL_NOEXCEPT_EXPR(x) noexcept(x)
 #else
 #define C_DECL_NOEXCEPT
 #define C_DECL_NOEXCEPT_EXPR(x)
+#endif
+
+#if C_SUPPORTED_CXX14
+# define C_DECL_CONSTEXPR constexpr
+# define C_DECL_RELAXED_CONSTEXPR constexpr
+# define C_CONSTEXPR constexpr
+# define C_RELAXED_CONSTEXPR constexpr
+#else
+# define C_DECL_CONSTEXPR
+# define C_DECL_RELAXED_CONSTEXPR
+# define C_CONSTEXPR
+# define C_RELAXED_CONSTEXPR
 #endif
 
 /**
