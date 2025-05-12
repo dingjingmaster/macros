@@ -117,12 +117,13 @@
 #endif
 
 #if defined(__GNUC__)
-#define C_ALIGNOF(type)     __alignof__ (type)
-#define C_TYPEOF(expr)      __typeof__(expr)
-#define C_DECL_UNUSED       __attribute__ ((__unused__))
-#define C_DECL_ALIGN(n)     __attribute__((__aligned__(n)))
-#define C_NORETURN          __attribute__((__noreturn__))
-#define C_DECL_DEPRECATED   __attribute__((__deprecated__))
+#define C_ALIGNOF(type)         __alignof__ (type)
+#define C_TYPEOF(expr)          __typeof__(expr)
+#define C_DECL_UNUSED           __attribute__ ((__unused__))
+#define C_DECL_ALIGN(n)         __attribute__((__aligned__(n)))
+#define C_NORETURN              __attribute__((__noreturn__))
+#define C_DECL_DEPRECATED       __attribute__((__deprecated__))
+#define C_DECL_CONST_FUNCTION   __attribute__((const))
 #else
 #define C_ALIGNOF(type)     
 #define C_TYPEOF(expr)      
@@ -130,6 +131,7 @@
 #define C_DECL_ALIGN(n)     
 #define C_NORETURN          
 #define C_DECL_DEPRECATED   
+#define C_DECL_CONST_FUNCTION 
 #endif
 
 
