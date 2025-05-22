@@ -189,7 +189,7 @@
 
 // 检查类型大小是否符合预期
 #ifndef C_TYPE_SIZE_CHECK
-#define C_TYPE_SIZE_CHECK(typeT, sizeT)                                         C_STRUCT_SIZE_CHECK((typeT), (sizeT))
+#define C_TYPE_SIZE_CHECK(typeT, sizeT)                                         C_STRUCT_SIZE_CHECK(typeT, (sizeT))
 #endif
 
 // 定义 int 类型
