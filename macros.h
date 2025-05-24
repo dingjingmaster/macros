@@ -702,10 +702,10 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #define C_BREAK_IF_NULL(x)                                                      if ((x) == NULL) { break; }
 #define C_RETURN_IF_OK(ck)														C_STMT_START if ((ck)) { return; } C_STMT_END
 #define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
-#define C_RETURN_IF_FAIL_SYSLOG_WARN(ck, ...)                                   C_STMT_START if (!(ck)) { syslog(LOG_WARN, ##__VA_ARGS__); return; } C_STMT_END
+#define C_RETURN_IF_FAIL_SYSLOG_WARN(ck, ...)                                   C_STMT_START if (!(ck)) { syslog(LOG_WARNING, ##__VA_ARGS__); return; } C_STMT_END
 #define C_RETURN_VAL_IF_OK(ck, val)                                             C_STMT_START if ((ck)) { return (val); } C_STMT_END
 #define C_RETURN_VAL_IF_FAIL(ck, val)                                           C_STMT_START if (!(ck)) { return (val); } C_STMT_END
-#define C_RETURN_VAL_IF_FAIL_SYSLOG_WARN(ck, val, ...)                          C_STMT_START if (!(ck)) { syslog(LOG_WARN, ##__VA_ARGS__); return (val); } C_STMT_END
+#define C_RETURN_VAL_IF_FAIL_SYSLOG_WARN(ck, val, ...)                          C_STMT_START if (!(ck)) { syslog(LOG_WARNING, ##__VA_ARGS__); return (val); } C_STMT_END
 #define C_FREE_FUNC(x, f, ...)                                                  C_STMT_START if ((x)) { f (x, ##__VA_ARGS__); x = NULL; } C_STMT_END
 
 
