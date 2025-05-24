@@ -139,27 +139,67 @@
 #endif
 
 #if defined(__GNUC__)
+#ifndef C_ALIGNOF
 #define C_ALIGNOF(type)         __alignof__ (type)
+#endif
+#ifndef C_TYPEOF
 #define C_TYPEOF(expr)          __typeof__(expr)
+#endif
+#ifndef C_DECL_UNUSED
 #define C_DECL_UNUSED           __attribute__ ((__unused__))
+#endif
+#ifndef C_DECL_ALIGN
 #define C_DECL_ALIGN(n)         __attribute__((__aligned__(n)))
+#endif
+#ifndef C_NORETURN
 #define C_NORETURN              __attribute__((__noreturn__))
+#endif
+#ifndef C_DECL_DEPRECATED
 #define C_DECL_DEPRECATED       __attribute__((__deprecated__))
+#endif
+#ifndef C_DECL_CONST_FUNCTION
 #define C_DECL_CONST_FUNCTION   __attribute__((const))
+#endif
+#ifndef C_REQUIRED_RESULT
 #define C_REQUIRED_RESULT       __attribute__((__warn_unused_result__))
+#endif
+#ifndef C_DECL_PURE_FUNCTION
 #define C_DECL_PURE_FUNCTION    __attribute__((pure))
+#endif
+#ifndef C_DECL_COLD_FUNCTION
 #define C_DECL_COLD_FUNCTION    __attribute__((cold))
+#endif
 #else
+#ifndef C_ALIGNOF
 #define C_ALIGNOF(type)     
+#endif
+#ifndef C_TYPEOF
 #define C_TYPEOF(expr)      
+#endif
+#ifndef C_DECL_UNUSED
 #define C_DECL_UNUSED       
+#endif
+#ifndef C_DECL_ALIGN
 #define C_DECL_ALIGN(n)     
+#endif
+#ifndef C_NORETURN
 #define C_NORETURN          
+#endif
+#ifndef C_DECL_DEPRECATED
 #define C_DECL_DEPRECATED   
+#endif
+#ifndef C_DECL_CONST_FUNCTION
 #define C_DECL_CONST_FUNCTION 
+#endif
+#ifndef C_REQUIRED_RESULT
 #define C_REQUIRED_RESULT
+#endif
+#ifndef C_DECL_PURE_FUNCTION
 #define C_DECL_PURE_FUNCTION
+#endif
+#ifndef C_DECL_COLD_FUNCTION
 #define C_DECL_COLD_FUNCTION
+#endif
 #endif
 
 #if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 403) && !(((__clang_major__ * 100) + __clang_minor__))
