@@ -202,10 +202,12 @@
 #endif
 #endif
 
+#ifndef C_ALLOC_SIZE
 #if defined(__GNUC__) && ((__GNUC__ * 100 + __GNUC_MINOR__) >= 403) && !(((__clang_major__ * 100) + __clang_minor__))
 #define C_ALLOC_SIZE(x)         __attribute__((alloc_size(x)))
 #else
 #define C_ALLOC_SIZE(x)
+#endif
 #endif
 
 
