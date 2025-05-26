@@ -769,7 +769,7 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
     (b) = tmp; \
 C_STMT_END
 
-__attribute__((weak))
+#ifndef C_STRLEN
 static inline cint64 c_strlen (const char* str)
 {
 	C_RETURN_VAL_IF_FAIL(str, 0);
@@ -779,8 +779,9 @@ static inline cint64 c_strlen (const char* str)
 
 	return idx;
 }
+#endif
 
-__attribute__((weak))
+#ifndef C_STRCMP
 static inline int c_strcmp (const char* str1, const char* str2)
 {
 	C_RETURN_VAL_IF_OK(str1 && !str2, 1);
@@ -802,8 +803,9 @@ static inline int c_strcmp (const char* str1, const char* str2)
 	// !str2[idx]
 	return 1;
 }
+#endif
 
-__attribute__((weak))
+#ifndef C_STRNCMP
 static inline int c_strncmp (const char* str1, const char* str2, cuint64 len)
 {
 	C_RETURN_VAL_IF_OK(str1 && !str2, 1);
@@ -826,8 +828,9 @@ static inline int c_strncmp (const char* str1, const char* str2, cuint64 len)
 
 	return 1;
 }
+#endif
 
-__attribute__((weak))
+#ifndef C_STR_HAS_PREFIX
 static inline bool c_str_has_prefix (const char* str, const char* prefix)
 {
 	C_RETURN_VAL_IF_FAIL(str, false);
@@ -835,8 +838,9 @@ static inline bool c_str_has_prefix (const char* str, const char* prefix)
 
 	return (0 == c_strncmp(str, prefix, c_strlen(prefix)));
 }
+#endif
 
-__attribute__((weak))
+#ifndef C_STR_HAS_SUFFIX
 static inline bool c_str_has_suffix (const char* str, const char* suffix)
 {
 	C_RETURN_VAL_IF_FAIL(str, false);
@@ -849,5 +853,6 @@ static inline bool c_str_has_suffix (const char* str, const char* suffix)
 
 	return (0 == c_strcmp(str + strLen - sufLen, suffix));
 }
+#endif
 
 #endif
