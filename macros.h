@@ -703,6 +703,11 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #endif
 
 
+#undef C_ROUND_UP
+#define C_ROUND_UP(num, unit)                                                   (((num) + (unit) - 1) & ~((unit) - 1))
+
+#undef C_ROUND_DOWN
+#define C_ROUND_DOWN(num, unit)                                                 ((num) & ((unit) - 1))
 
 #undef C_MAX
 #define C_MAX(a, b)                                                             (((a) > (b)) ? (a) : (b))
