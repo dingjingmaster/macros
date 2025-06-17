@@ -702,6 +702,8 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #define C_Q(klass) klass* const q = q_func()
 #endif
 
+#undef C_HEX
+#define C_HEX(x)                                                                ((x) < 10 ? (x) + '0' : (x) - 10 + 'A')
 
 #undef C_ROUND_UP
 #define C_ROUND_UP(num, unit)                                                   (((num) + (unit) - 1) & ~((unit) - 1))
