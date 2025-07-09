@@ -849,8 +849,12 @@ static inline cint64 c_str_copy_line_buffer (const char* str, char* buffer, cint
     cint64 i = 0;
     cint64 bufferSizeT = bufferSize - 1;
 
-    for (i = 0; i < bufferSizeT && str[i] && ('\n' != str[i]); ++i) {
+    for (i = 0; i < bufferSizeT && str[i]; ++i) {
         buffer[i] = str[i];
+        if ('\n' == str[i]) {
+            buffer[i] = '\0';
+            break;
+        }
     }
     buffer[i] = '\0';
 
