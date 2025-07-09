@@ -840,6 +840,24 @@ static inline int c_strncmp (const char* str1, const char* str2, cuint64 len)
 }
 #endif
 
+#ifndef C_STR_COPY_LINE_BUFFER
+static inline cint64 c_str_copy_line_buffer (const char* str, char* buffer, cint64 bufferSize)
+{
+    C_RETURN_VAL_IF_FAIL(str, 0);
+    C_RETURN_VAL_IF_FAIL(buffer && bufferSize > 0, 0);
+
+    cint64 i = 0;
+    cint64 bufferSizeT = bufferSize - 1;
+
+    for (i = 0; i < bufferSizeT && str[i]; ++i) {
+        buffer[i] = str[i];
+    }
+    buffer[i] = '\0';
+
+    return i;
+}
+#endif
+
 #ifndef C_STR_HAS_PREFIX
 static inline bool c_str_has_prefix (const char* str, const char* prefix)
 {
