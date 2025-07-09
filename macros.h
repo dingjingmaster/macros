@@ -758,6 +758,7 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #define C_RETURN_VAL_IF_FAIL_SYSLOG_WARN(ck, val, ...)                          C_STMT_START if (!(ck)) { syslog(LOG_WARNING, ##__VA_ARGS__); return (val); } C_STMT_END
 #define C_FREE_FUNC(x, f, ...)                                                  C_STMT_START if ((x)) { f (x, ##__VA_ARGS__); } C_STMT_END
 #define C_FREE_FUNC_NULL(x, f, ...)                                             C_STMT_START if ((x)) { f (x, ##__VA_ARGS__); x = NULL; } C_STMT_END
+#define C_FREE_FUNC_IF_OK(x, ck, f, ...)                                        C_STMT_START if ((ck)){ f (x, ##__VA_ARGS__); } C_STMT_END
 #define C_FREE_FUNC_NULL_IF_OK(x, ck, f, ...)                                   C_STMT_START if ((ck)){ f (x, ##__VA_ARGS__); x = NULL; } C_STMT_END
 
 
