@@ -1,6 +1,7 @@
 #ifndef C_COMMON_STD_MACROS_H
 #define C_COMMON_STD_MACROS_H
 #include <stdio.h>
+#include <ctype.h>
 #include <assert.h>
 #include <stdint.h>
 #include <stddef.h>
@@ -885,6 +886,20 @@ static inline bool c_str_has_suffix (const char* str, const char* suffix)
 	C_RETURN_VAL_IF_OK(strLen < sufLen, false);
 
 	return (0 == c_strcmp(str + strLen - sufLen, suffix));
+}
+#endif
+
+#ifndef C_STR_ASCII_TO_LOWER
+static inline void c_str_ascii_to_lower  (char* str)
+{
+    int i = 0;
+    char c = '\0';
+    for (i = 0; str[i] != '\0'; i++) {
+        c = str[i];
+        if (isascii(c)) {
+            str[i] = (char) tolower(c);
+        }
+    }
 }
 #endif
 
