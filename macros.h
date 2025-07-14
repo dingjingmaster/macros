@@ -888,4 +888,8 @@ static inline bool c_str_has_suffix (const char* str, const char* suffix)
 }
 #endif
 
+#ifndef C_IS_IPV4_ADDR
+// inet_pton
+#endif
+
 #endif
