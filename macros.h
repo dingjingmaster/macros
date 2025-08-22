@@ -742,6 +742,8 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #undef C_FREE_FUNC
 #undef C_BREAK_IF_FAIL
 #undef C_BREAK_IF_NULL
+#undef C_BREAK_VAL_IF_FAIL
+
 #undef C_RETURN_IF_FAIL
 #undef C_RETURN_VAL_IF_FAIL
 #undef C_RETURN_IF_FAIL_SYSLOG_WARN
@@ -750,7 +752,11 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 #define C_BREAK_IF_OK(x)														if (x) { break; }
 #define C_BREAK_IF_FAIL(x)                                                      if (!(x)) { break; }
 #define C_BREAK_IF_NULL(x)                                                      if ((x) == NULL) { break; }
+#define C_BREAK_VAL_IF_OK(x, key, val)                                          if (x) { (key) = (val); break; }
+#define C_BREAK_VAL_IF_FAIL(x, key, val)                                        if (!(x)) { (key) = (val); break; }
+#define C_BREAK_VAL_IF_NULL(x, key, val)                                        if ((x) == NULL) { (key) = (val); break; }
 #define C_BREAK_IF_FAIL_SYSLOG_WARN(x, ...)                                     if (!(x)) { syslog(LOG_WARNING, ##__VA_ARGS__); break; }
+
 #define C_RETURN_IF_OK(ck)														C_STMT_START if ((ck)) { return; } C_STMT_END
 #define C_RETURN_IF_FAIL(ck)                                                    C_STMT_START if (!(ck)) { return; } C_STMT_END
 #define C_RETURN_IF_FAIL_SYSLOG_WARN(ck, ...)                                   C_STMT_START if (!(ck)) { syslog(LOG_WARNING, ##__VA_ARGS__); return; } C_STMT_END
