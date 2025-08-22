@@ -781,7 +781,7 @@ template <typename Ptr> inline auto cGetPtrHelper(Ptr &ptr) C_DECL_NOEXCEPT -> d
 C_STMT_END
 
 #ifndef C_STRLEN
-static inline cint64 c_strlen (const char* str)
+static inline cuint64 c_strlen (const char* str)
 {
 	C_RETURN_VAL_IF_FAIL(str, 0);
 
